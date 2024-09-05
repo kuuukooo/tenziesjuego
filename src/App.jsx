@@ -1,7 +1,7 @@
 import { React, useState} from 'react'
 import './App.css'
 import Dice from './components/dice'
-
+import {nanoid} from 'nanoid'
 function App(props) {
 
   /**
@@ -15,18 +15,20 @@ function App(props) {
 
   const [dice, setDice] = useState(allNewDice())
 
-  const diceElements = dice.map(dice => <Dice value={dice.value} />)
+  const diceElements = dice.map(dice => <Dice key={dice.id} value={dice.value} />)
 
   function allNewDice() {
     const newDice = []
     for (let i = 0; i < 10; i++) {
       newDice.push({
         value: Math.ceil(Math.random() * 6),
-        isHeld: false
+        isHeld: false,
+        id: nanoid() 
       })
     }
     return newDice
   }
+
 
   function rollDice() {
     setDice(allNewDice())
