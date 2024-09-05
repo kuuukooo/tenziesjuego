@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+:root {
+  --fondo: #0B2434;
+  --caja: #F5F5F5;
+  --boton: #5035FF;
+}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--fondo);
+  padding: 1.25rem;
+  font-family: "Karla", sans-serif;
+}
+
+.tenzies--wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tenzies--main {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--caja);
+  height: 47rem;
+  width: 50rem;
+  max-width: 50rem;
+  border-radius: 0.313rem;
+}
+
+
+.tenzies--dice--container {
+  display: grid;
+  grid-template: auto auto / repeat(5, 1fr);
+  font-size: 1.287rem;
+  font-weight: 700;
+  line-height: 1.504rem;
+  text-align: center;
+  gap: 1.25rem;
+}
+
+.dice-face {
+  height: 3.125rem;
+  width: 3.125rem;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
+  border-radius: 0.625rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: white;
+}
+
+.dice-num {
+  font-size: 2rem;
+}
+
+.tenzies--button-container {
+  position: absolute;
+  bottom: 13rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.tenzies--button {
+  color: var(--caja);
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+  background-color: var(--boton);
+  height: 80px;
+  width: 150px;
+  border-radius: 10px;
+  box-shadow: 0px 3.2px 7.68px 0px #0000002E;
+  font-size: 1.2rem;
+  font-weight: 900;
+  line-height: 1.197rem;
+  filter: drop-shadow(0 10px 0 #15111a);
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  transition: all 0.1s ease;
+}
+
+.hover__press:hover {
+  filter: drop-shadow(0 0 0 #15111a);
+  transform: translate(0, 10px);
+  clip-path: inset(0% 0 0% 0 round 10px);
+}
+
+.hover__press:active {
+  filter: drop-shadow(0 -10px 0 #1b1621);
+  transform: translate(0, 20px);
+  
+  clip-path: inset(-20% 0 13% 0 round 10px);
+  
+  background-color: var(--boton);
+}
