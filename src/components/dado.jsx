@@ -9,13 +9,13 @@ export default function Dado(props) {
         props.playBeep();  
     }
 
-    return(
+    return (
         <div 
-            className="dado--cara" 
+            className={`dado--cara ${props.hayError ? 'temblor' : ''}`} // Aplicar clase temblor si hayError es true
             style={estilos}
             onClick={handleClick}
         >
             <h2 className="dado--num">{props.valor}</h2>
         </div>
-    )
+    );
 }

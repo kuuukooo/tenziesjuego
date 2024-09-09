@@ -7,8 +7,9 @@ import useSound from 'use-sound';
 import celebracion from './assets/sound/celebracion.mp3';
 import beep from './assets/sound/beep.mp3';
 import roll from './assets/sound/roll.mp3';
+import error from './assets/sound/error.mp3';
 
-function App(props) {
+export default function App(props) {
 
   const [dado, setDado] = useState(() => {
     const savedDado = localStorage.getItem('dado');
@@ -16,10 +17,12 @@ function App(props) {
   });
 
   const [dieces, setDieces] = useState(false);
+  const [hayError, setHayError] = useState(false);
 
   const [playCelebracion] = useSound(celebracion, { volume: 0.3 });
   const [playBeep] = useSound(beep, { volume: 0.3 });
   const [playRoll] = useSound(roll, { volume: 0.3 });
+  const [playError] = useSound(error, { volume: 0.3 });
 
   useEffect(() => {
     verificarVictoria();
@@ -55,18 +58,30 @@ function App(props) {
   }
 
   function tirarDados() {
-    setDado(prevdado =>
-      prevdado.map(die => {
-        return die.esGuardado ? die : generarNuevoDado();
-      })
-    );
-    playRoll();
+    const dadosGuardados = dado.filter(die => die.esGuardado);
+    const primerValor = dadosGuardados[0]?.valor;
+    const todosMismoValor = dadosGuardados.every(die => die.valor === primerValor);
+
+    if (dadosGuardados.length > 0 && !todosMismoValor) {
+      // Si los valores no coinciden, reproducir sonido de error y aplicar animación de temblor
+      setHayError(true);
+      playError();
+    } else {
+      setHayError(false);
+      setDado(prevdado =>
+        prevdado.map(die => {
+          return die.esGuardado ? die : generarNuevoDado();
+        })
+      );
+      playRoll();
+    }
   }
 
   function nuevoJuego() {
     const nuevosDadosGenerados = nuevosDados();
     setDado(nuevosDadosGenerados);
     setDieces(false);
+    setHayError(false);
     localStorage.setItem('dado', JSON.stringify(nuevosDadosGenerados));
   }
 
@@ -91,6 +106,7 @@ function App(props) {
       esGuardado={die.esGuardado}
       playBeep={playBeep}
       retenerDado={() => retenerDado(die.id)}
+      hayError={hayError && die.esGuardado}  // Aplicar animación si hay error
     />
   ));
 
@@ -133,5 +149,3 @@ function App(props) {
     </div>
   );
 }
-
-export default App;

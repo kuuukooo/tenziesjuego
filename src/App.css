@@ -142,6 +142,25 @@ body {
   margin-top: 7.5rem;
 }
 
+/* App.css */
+.temblor {
+  animation: temblar 0.5s ease-in-out;
+}
+
+@keyframes temblar {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+}
 /* Pantallas grandes (monitores con resolución mayor a 1080p) */
 @media (min-width: 1920px) {
   .dieces--wrapper {
