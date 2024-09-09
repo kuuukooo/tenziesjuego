@@ -3,6 +3,7 @@
   --fondo: #0B2434;
   --caja: #F5F5F5;
   --boton: #5035FF;
+  --texto: #4A4E74;
 }
 * {
   box-sizing: border-box;
@@ -15,13 +16,13 @@ body {
   font-family: "Karla", sans-serif;
 }
 
-.tenzies--wrapper {
+.dieces--wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.tenzies--main {
+.dieces--main {
   position: relative;
   display: flex;
   justify-content: center;
@@ -33,8 +34,33 @@ body {
   border-radius: 0.313rem;
 }
 
+.dieces--titulo {
+  font-family: 'Karla', sans-serif;
+  position: absolute;
+  align-self: flex-start;
+  margin-top: 2.3rem;
+  font-size: 4.5rem;
+  font-weight: 700;
+  line-height: 29.93px;
+  letter-spacing: -0.03em;
+  text-align: center;
+}
 
-.tenzies--dice--container {
+.dieces--instrucciones {
+  font-family: 'Inter', sans-serif;
+  color: var(--texto);
+  position: absolute;
+  align-self: flex-start;
+  margin: 5.9rem;
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 2.86rem;
+  letter-spacing: -0.06em;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.dieces--dado--contenedor {
   display: grid;
   grid-template: auto auto / repeat(5, 1fr);
   font-size: 1.287rem;
@@ -42,27 +68,27 @@ body {
   line-height: 1.504rem;
   text-align: center;
   gap: 1.25rem;
+  margin-top: 2.5rem;
 }
 
-.dice-face {
-  height: 3.125rem;
-  width: 3.125rem;
+.dado--cara {
+  height: 5.125rem;
+  width: 5.125rem;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
   border-radius: 0.625rem;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  background-color: white;
 }
 
-.dice-num {
+.dado--num {
   font-size: 2rem;
 }
 
-.tenzies--button-container {
+.dieces--button-contenedor {
   position: absolute;
-  bottom: 13rem;
+  bottom: 9rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -71,7 +97,7 @@ body {
 }
 
 
-.tenzies--button {
+.dieces--boton {
   color: var(--caja);
   display: flex;
   justify-content: center;
@@ -104,4 +130,195 @@ body {
   clip-path: inset(-20% 0 13% 0 round 10px);
   
   background-color: var(--boton);
+}
+
+.ganador {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 2.86rem;
+  letter-spacing: -0.06em;
+  text-align: center;
+  color: var(--texto);
+  margin-top: 7.5rem;
+}
+
+/* Pantallas grandes (monitores con resolución mayor a 1080p) */
+@media (min-width: 1920px) {
+  .dieces--wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Centrado vertical */
+  }
+
+  .dieces--main {
+    height: 50rem; /* Aumenta el tamaño del contenedor principal para pantallas grandes */
+    width: 55rem;
+    margin: 0 auto; /* Centrado horizontal */
+  }
+
+  .dieces--titulo {
+    font-size: 5rem; /* Texto más grande en monitores de alta resolución */
+  }
+
+  .dieces--instrucciones {
+    font-size: 2.5rem;
+    margin: 6rem 3rem;
+  }
+
+  .dado--cara {
+    height: 6rem; /* Aumenta el tamaño de los dados */
+    width: 6rem;
+  }
+
+  .dieces--boton {
+    height: 90px;
+    width: 170px;
+    font-size: 1.5rem;
+  }
+
+  .ganador {
+    font-size: 3rem;
+    margin-top: 8rem;
+  }
+}
+
+
+/* Dispositivos grandes (laptops y desktops) */
+@media (max-width: 1200px) {
+  .dieces--wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Para centrar verticalmente */
+  }
+
+  .dieces--main {
+    height: 40rem;
+    width: 45rem;
+    margin: 0 auto; 
+  }
+  .dieces--titulo {
+    font-size: 4rem;
+  }
+
+  .dieces--instrucciones {
+    font-size: 1.8rem;
+  }
+
+  .dado--cara {
+    height: 4.5rem;
+    width: 4.5rem;
+  }
+
+  .dieces--boton {
+    height: 70px;
+    width: 130px;
+  }
+
+  .dieces--button-contenedor {
+    bottom: 5rem;
+  }
+
+  .ganador {
+    font-size: 2.3rem;
+  }
+}
+
+/* Tablets (vertical y horizontal) */
+@media (max-width: 768px) {
+  .dieces--wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Centrado vertical */
+  }
+
+  .dieces--main {
+    height: 35rem;
+    width: 90%;
+    margin: 0 auto; /* Centrado horizontal */
+  }
+
+  .dieces--titulo {
+    font-size: 3.5rem;
+    margin-top: 2rem;
+  }
+
+  .dieces--instrucciones {
+    font-size: 1.5rem;
+    margin: 4.5rem 2rem;
+  }
+
+  .dado--cara {
+    height: 4rem;
+    width: 4rem;
+  }
+
+  .dieces--boton {
+    height: 60px;
+    width: 120px;
+  }
+
+  .ganador {
+    font-size: 2rem;
+    margin-top: 5rem;
+  }
+}
+
+
+/* Teléfonos móviles (smartphones) */
+@media (max-width: 480px) {
+  .dieces--wrapper {
+    display: flex;
+    align-self: center;
+    justify-self: center;
+  }
+
+  .dieces--main {
+    margin-top: 2rem;
+    width: 100%;
+    padding: 1.5rem;
+  }
+
+  .dieces--titulo {
+    font-size: 2rem;
+    margin-top: 1rem;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .dieces--instrucciones {
+    font-size: 1rem;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  .dado--cara {
+    height: 3rem;
+    width: 3rem;
+  }
+
+  .dieces--dado--contenedor {
+    grid-template-columns: repeat(5, 1fr); /* Ajusta el grid a 4 columnas para móviles */
+    gap: 0.6rem; /* Reduce el espacio entre los dados */
+    margin-top: 1.5rem;
+    padding: 0 0.5rem;
+  }
+
+  .dieces--button-contenedor {
+    bottom: 4rem;
+  }
+
+  .dieces--boton {
+    height: 45px;
+    width: 100px;
+    font-size: 1rem;
+  }
+
+  .ganador {
+    font-size: 1.5rem;
+    margin-top: 3rem;
+    text-align: center;
+  }
 }

@@ -1,59 +1,137 @@
-import { React, useState} from 'react'
-import './App.css'
-import Dice from './components/dice'
-import {nanoid} from 'nanoid'
+import { React, useEffect, useState } from 'react';
+import './App.css';
+import Dado from './components/dado';
+import { nanoid } from 'nanoid';
+import Confetti from 'react-confetti';
+import useSound from 'use-sound';
+import celebracion from './assets/sound/celebracion.mp3';
+import beep from './assets/sound/beep.mp3';
+import roll from './assets/sound/roll.mp3';
+
 function App(props) {
 
-  /**
- * Challenge: Create a `Roll Dice` button that will re-roll
- * all 10 dice
- * 
- * Clicking the button should generate a new array of numbers
- * and set the `dice` state to that new array (thus re-rendering
- * the array to the page)
- */
+  const [dado, setDado] = useState(() => {
+    const savedDado = localStorage.getItem('dado');
+    return savedDado ? JSON.parse(savedDado) : nuevosDados();
+  });
 
-  const [dice, setDice] = useState(allNewDice())
+  const [dieces, setDieces] = useState(false);
 
-  const diceElements = dice.map(dice => <Dice key={dice.id} value={dice.value} />)
+  const [playCelebracion] = useSound(celebracion, { volume: 0.3 });
+  const [playBeep] = useSound(beep, { volume: 0.3 });
+  const [playRoll] = useSound(roll, { volume: 0.3 });
 
-  function allNewDice() {
-    const newDice = []
-    for (let i = 0; i < 10; i++) {
-      newDice.push({
-        value: Math.ceil(Math.random() * 6),
-        isHeld: false,
-        id: nanoid() 
-      })
+  useEffect(() => {
+    verificarVictoria();
+    localStorage.setItem('dado', JSON.stringify(dado));
+  }, [dado]);
+
+  function verificarVictoria() {
+    const todosGuardados = dado.every(die => die.esGuardado);
+    const primerValor = dado[0].valor;
+    const todosMismoValor = dado.every(dado => dado.valor === primerValor);
+
+    if (todosGuardados && todosMismoValor) {
+      setDieces(true);
+      playCelebracion();
+      console.log('¡Ganaste!');
     }
-    return newDice
   }
 
-
-  function rollDice() {
-    setDice(allNewDice())
+  function generarNuevoDado() {
+    return {
+      valor: Math.ceil(Math.random() * 6),
+      esGuardado: false,
+      id: nanoid()
+    };
   }
 
-  console.log(allNewDice())
-  console.log(diceElements)
+  function nuevosDados() {
+    const nuevodado = [];
+    for (let i = 0; i < 10; i++) {
+      nuevodado.push(generarNuevoDado());
+    }
+    return nuevodado;
+  }
+
+  function tirarDados() {
+    setDado(prevdado =>
+      prevdado.map(die => {
+        return die.esGuardado ? die : generarNuevoDado();
+      })
+    );
+    playRoll();
+  }
+
+  function nuevoJuego() {
+    const nuevosDadosGenerados = nuevosDados();
+    setDado(nuevosDadosGenerados);
+    setDieces(false);
+    localStorage.setItem('dado', JSON.stringify(nuevosDadosGenerados));
+  }
+
+  function retenerDado(id) {
+    setDado(prevdado =>
+      prevdado.map(die => {
+        if (die.id === id) {
+          return {
+            ...die,
+            esGuardado: !die.esGuardado
+          };
+        }
+        return die;
+      })
+    );
+  }
+
+  const dadoElements = dado.map(die => (
+    <Dado
+      key={die.id}
+      valor={die.valor}
+      esGuardado={die.esGuardado}
+      playBeep={playBeep}
+      retenerDado={() => retenerDado(die.id)}
+    />
+  ));
+
   return (
     <div>
-      <div className='tenzies--wrapper'>
-        <main className='tenzies--main'>
-          <div className='tenzies--dice--container'>
-            {diceElements}
-            <div className='tenzies--button-container'>
+      {dieces && <Confetti />}
+      <div className='dieces--wrapper'>
+        <main className='dieces--main'>
+          {dieces ? 
+            <h1 className="dieces--titulo">¡Ganaste!</h1>
+          :
+            <h1 className="dieces--titulo">Dieces</h1>
+          }
+          {dieces ?
+            <p className="dieces--instrucciones">¡Felicidades! Todos los dados tienen el mismo valor :D</p>
+          :
+            <p className="dieces--instrucciones">Tira los dados hasta que todos tengan los mismos valores. Haz click en cada dado para congelar su número entre tiradas.</p>
+          }
+          <div className='dieces--dado--contenedor'>
+            {dadoElements}
+            <div className='dieces--button-contenedor'>
+              {dieces ?
               <button
-                className="tenzies--button hover__press"
-                onClick={rollDice}>
+                className='dieces--boton hover__press'
+                onClick={nuevoJuego}
+              >
+                ¿Jugar de Nuevo?</button>
+              :
+              <button
+                className="dieces--boton hover__press"
+                onClick={tirarDados}
+              >
                 ¡Tirar Dados!
               </button>
+              }
             </div>
           </div>
         </main>
       </div>
-    </div>    
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
